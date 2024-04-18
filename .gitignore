@@ -1,52 +1,17 @@
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
+bin/exe
+lib/libdemo_lib.so*
+CMakeCache.txt
+CMakeFiles
+# cmake will create this; bmake will use BSDmakefile instead, so all is ok.
+Makefile
+cmake_install.cmake
+demo_exe
+ossl_cnf*
 *.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
+*.core
+*.debug
 *.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+*.full
+*.o
+*.so
+.depend*

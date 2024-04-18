@@ -1,0 +1,10 @@
+LIB=	demo_lib
+SHLIB_MAJOR=	0
+SHLIBDIR=	${.CURDIR}
+SRCS=	lib.c
+
+LDADD+=	-lcrypto
+
+WARNS=	6
+
+.include <bsd.lib.mk>

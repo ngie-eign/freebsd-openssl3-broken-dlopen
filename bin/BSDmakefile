@@ -1,0 +1,8 @@
+PROG=demo_exe
+SRCS=exe.c
+
+MAN=
+
+WARNS=	6
+
+.include <bsd.prog.mk>
