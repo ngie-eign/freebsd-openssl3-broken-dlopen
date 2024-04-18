@@ -1,6 +1,6 @@
 # 3.19 adds needed for adequate FindOpenSSL macro support.
 cmake_minimum_required(VERSION 3.19)
-project(openssl3-rtld-breakage)
+project(freebsd-openssl3-broken-dlopen)
 
 find_package(OpenSSL 3.0.0 REQUIRED)
 

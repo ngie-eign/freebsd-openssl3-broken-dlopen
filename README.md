@@ -1,4 +1,4 @@
-# openssl3-rtld-local-broken
+# freebsd-openssl3-broken-dlopen
 Simple reproducer to show that dlopen(..., RTLD_LOCAL) doesn't play nicely with OpenSSL 3.0
 
 # Requirements
