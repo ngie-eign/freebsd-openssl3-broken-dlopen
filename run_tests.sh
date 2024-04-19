@@ -3,10 +3,22 @@
 set -eu
 #set -x
 
+_msg()
+{
+	local level=$1; shift
+
+	echo "$(basename "$0"): $level: $@."
+}
+
 err()
 {
-	echo "${0##*/}: ERROR: $@."
+	_msg "ERROR" "$@"
 	exit 1
+}
+
+info()
+{
+	_msg "INFO" "$@"
 }
 
 timeout=timeout
@@ -75,25 +87,23 @@ openssl fipsinstall -quiet -provider_name fips -module $FIPS_SO -out $fipsconf
 
 export OPENSSL_CONF="$tmpconf"
 
+info "Verifying FIPS provider is usable."
 openssl fipsinstall -config $tmpconf -in $fipsconf
 
 set +e
 
 echo "Listing all providers"
 env OPENSSL_CONF="$tmpconf" openssl list -providers
-for provider in base fips; do
-	printf "$provider provider info follows:\n"
-	openssl list -provider $provider
-done
 
 export LD_LIBRARY_PATH="$PWD:$PWD/lib"
 export PATH="$PWD:$PWD/bin:$PATH"
 
-which demo_exe || exit
+demo_exe=$(which demo_exe) || exit
 
 #for f in $tmpconf $fipsconf; do echo "$f.."; cat $f; done; exit 0
 
 for flag_combo in "" "-L" "-LN" "-N"; do
-	printf "****** Flag combo: %s\n" "$flag_combo"
-	$timeout 10 demo_exe $flag_combo
+	flag_msg=$(printf "Flags: '%s'\n" "$flag_combo")
+	info "$flag_msg"
+	$timeout 10 $demo_exe $flag_combo
 done
