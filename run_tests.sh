@@ -1,6 +1,7 @@
 #!/bin/sh
 
-set -eux
+set -eu
+#set -x
 
 err()
 {
@@ -8,9 +9,11 @@ err()
 	exit 1
 }
 
+timeout=timeout
 case "$(uname)" in
 Darwin)
 	so_ext=dylib
+	timeout=gtimeout
 	;;
 FreeBSD|Linux)
 	so_ext=so
@@ -41,12 +44,12 @@ fi
 
 rm -f CMakeCache.txt
 cmake --fresh -DCMAKE_BUILD_TYPE=Debug -DOpenSSL_ROOT="$OPENSSL_ROOT" .
-make clean
-make all
+make -s clean
+make -s all
 
 tmpconf="$(mktemp ossl_cnf_XXXXXX)"
 fipsconf="$tmpconf.fips"
-#trap "rm -f $tmpconf $fipsconf" EXIT INT TERM
+trap "rm -f $tmpconf $fipsconf" EXIT INT TERM
 
 cat > $tmpconf <<EOF
 config_diagnostics = 1
@@ -91,6 +94,6 @@ which demo_exe || exit
 #for f in $tmpconf $fipsconf; do echo "$f.."; cat $f; done; exit 0
 
 for flag_combo in "" "-L" "-LN" "-N"; do
-	printf "Flag combo: %s\n" "$flag_combo"
-	demo_exe $flag_combo
+	printf "****** Flag combo: %s\n" "$flag_combo"
+	$timeout 10 demo_exe $flag_combo
 done
