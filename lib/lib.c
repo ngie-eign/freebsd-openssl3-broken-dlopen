@@ -27,7 +27,7 @@ load_fips(void)
 	fprintf(stderr, "loading config\n");
 	fflush(stderr);
 
-	if (CONF_modules_load_file(NULL, openssl_conf, conf_modules_load_flags)
+	if (CONF_modules_load_file(openssl_conf, NULL, conf_modules_load_flags)
 	    != 1) {
 		ERR_print_errors_fp(stderr);
 		abort();
