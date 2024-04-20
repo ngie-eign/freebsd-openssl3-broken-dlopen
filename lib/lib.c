@@ -8,10 +8,40 @@
 
 #include "lib.h"
 
-void
+static void
+_test_provider_load(const char* provider_name)
+{
+	OSSL_PROVIDER *prov;
+
+	prov = OSSL_PROVIDER_load(NULL, provider_name);
+	if (prov == NULL) {
+		ERR_print_errors_fp(stderr);
+		abort();
+	}
+
+	fprintf(stderr, "%s provider loaded\n", provider_name);
+
+	if (OSSL_PROVIDER_available(NULL, provider_name) == 1) {
+		fprintf(stderr, "%s provider 'available'.\n",
+		    provider_name);
+	} else {
+		fprintf(stderr,
+		    "%s provider not 'available'; see errors below for more details.\n",
+		    provider_name);
+		ERR_print_errors_fp(stderr);
+	}
+	fflush(stderr);
+
+	if (OSSL_PROVIDER_unload(prov) != 1) {
+		ERR_print_errors_fp(stderr);
+		abort();
+	}
+	fprintf(stderr, "%s provider unloaded successfully\n", provider_name);
+}
+
+static void
 load_fips(void)
 {
-	OSSL_PROVIDER *fips;
 	char *openssl_conf;
 	int conf_modules_load_flags;
 
@@ -35,14 +65,21 @@ load_fips(void)
 	fprintf(stderr, "loaded config\n");
 	fflush(stderr);
 
-	fips = OSSL_PROVIDER_load(NULL, "fips");
-	if (fips == NULL) {
-		ERR_print_errors_fp(stderr);
-		abort();
-	}
-
-	fprintf(stderr, "fips provider loaded\n");
-	fflush(stderr);
+	_test_provider_load("fips");
 
 	free(openssl_conf);
+}
+
+static void
+load_legacy(void)
+{
+
+	_test_provider_load("legacy");
+}
+
+void
+load_providers(void)
+{
+	load_fips();
+	load_legacy();
 }

@@ -49,9 +49,13 @@ fi
 if [ -d "$OPENSSL_ROOT" ]; then
 	OPENSSL_MODULE_DIR="$OPENSSL_ROOT/lib/ossl-modules"
 	FIPS_PROVIDER_SO="$OPENSSL_MODULE_DIR/fips.$so_ext"
+	LEGACY_PROVIDER_SO="$OPENSSL_MODULE_DIR/legacy.$so_ext"
 fi
-if [ ! -r "${FIPS_PROVIDER_SO:-/nonexistent}" ]; then
-	err "Could not find a copy of OpenSSL with the FIPS provider; please specify OPENSSL_ROOT to a copy of OpenSSL which contains the FIPS provider."
+if [ ! -r "${FIPS_PROVIDER_SO:-/nonexistent}" -o \
+     ! -r "${LEGACY_PROVIDER_SO:-/nonexistent}" ]; then
+	err "Could not find a copy of OpenSSL with the FIPS/legacy providers" \
+	    "please specify OPENSSL_ROOT to a copy of OpenSSL which contains the" \
+	    "beforementioned providers."
 fi
 
 rm -f CMakeCache.txt

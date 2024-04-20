@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-typedef	void (*load_fips_t)(void);
+typedef	void (*load_provider_t)(void);
 
 #ifdef	__APPLE__
 #define	SO_EXT	"dylib"
@@ -52,13 +52,13 @@ main(int argc, char **argv)
 	}
 
 	printf("Calling dlfunc..\n");
-	load_fips_t load_fips = (load_fips_t)dlsym(dlhandle, "load_fips");
-	if (load_fips == NULL) {
+	load_provider_t load_providers = (load_provider_t)dlsym(dlhandle, "load_providers");
+	if (load_providers == NULL) {
 		warnx("huh?");
 		errx(1, "dlfunc failed: %s", dlerror());
 	}
 
-	load_fips();
+	load_providers();
 
 	dlclose(dlhandle);
 
