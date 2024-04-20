@@ -81,6 +81,7 @@ fips = fips_sect
 activate = 1
 EOF
 
+export LD_LIBRARY_PATH="$OPENSSL_ROOT/lib:${LD_LIBRARY_PATH:-}"
 export PATH="$OPENSSL_ROOT/bin:$PATH"
 FIPS_SO="$OPENSSL_MODULE_DIR/fips.$so_ext"
 openssl fipsinstall -quiet -provider_name fips -module $FIPS_SO -out $fipsconf
