@@ -1,6 +1,8 @@
 # freebsd-openssl3-broken-dlopen
 Simple reproducer to show that dlopen(..., RTLD_LOCAL) doesn't play nicely with OpenSSL 3.0
 
+Helps repro https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=278469 .
+
 # Requirements
 
 - OpenSSL 3.0+ built with the FIPS provider.
