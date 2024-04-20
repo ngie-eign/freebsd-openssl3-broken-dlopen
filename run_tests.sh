@@ -105,5 +105,5 @@ demo_exe=$(which demo_exe) || exit
 for flag_combo in "" "-L" "-LN" "-N"; do
 	flag_msg=$(printf "Flags: '%s'\n" "$flag_combo")
 	info "$flag_msg"
-	$timeout 10 $demo_exe $flag_combo
+	$timeout -s ABRT 10 $demo_exe $flag_combo
 done
